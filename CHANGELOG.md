@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-10-17
 
 ### Added
-- Initial public release of TRACE Protocol
+- Initial public release of APAAI Protocol
 - Complete website with manifesto and technical specification
 - OpenAPI specification for machine-readable API definition
 - TypeScript/JavaScript SDK with `@trace/client` package

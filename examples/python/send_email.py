@@ -1,4 +1,4 @@
-from trace_client import TraceClient, Actor
+from apaai_client import TraceClient, Actor
 import requests
 
 trace = TraceClient(endpoint="http://localhost:8787")

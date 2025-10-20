@@ -1,12 +1,12 @@
-# 🚀 TRACE Protocol v0.1.0 Release Announcement
+# 🚀 APAAI Protocol v0.1.0 Release Announcement
 
-## **Introducing TRACE Protocol: Open Standard for Accountable AI**
+## **Introducing APAAI Protocol: Open Standard for Accountable AI**
 
-We're excited to announce the first public release of **TRACE Protocol** - an open standard for trusted records of autonomous computation events.
+We're excited to announce the first public release of **APAAI Protocol** - an open standard for trusted records of autonomous computation events.
 
-### **What is TRACE Protocol?**
+### **What is APAAI Protocol?**
 
-TRACE Protocol defines a unified model — **Action → Policy → Evidence** — for recording, auditing, and governing autonomous computation. It enables organizations to adopt AI agents without losing traceability, safety, or accountability.
+APAAI Protocol defines a unified model — **Action → Policy → Evidence** — for recording, auditing, and governing autonomous computation. It enables organizations to adopt AI agents without losing traceability, safety, or accountability.
 
 ### **🎯 Key Features**
 
@@ -51,10 +51,10 @@ trace.evidence(decision["actionId"], [
 
 ### **🔗 Resources**
 
-- **Website**: https://traceprotocol.org
-- **Repository**: https://github.com/trace-protocol/trace-protocol
-- **Documentation**: https://traceprotocol.org/spec.html
-- **Examples**: https://github.com/trace-protocol/trace-protocol/tree/main/examples
+- **Website**: https://apaaiprotocol.org
+- **Repository**: https://github.com/apaai-protocol/apaai-protocol
+- **Documentation**: https://apaaiprotocol.org/spec.html
+- **Examples**: https://github.com/apaai-protocol/apaai-protocol/tree/main/examples
 
 ### **🤝 Contributing**
 

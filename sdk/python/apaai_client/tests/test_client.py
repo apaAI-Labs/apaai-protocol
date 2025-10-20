@@ -1,5 +1,5 @@
 import responses
-from trace_client import TraceClient, Actor
+from apaai_client import ApaaiClient, Actor
 
 
 @responses.activate
@@ -21,7 +21,7 @@ def test_propose_and_evidence_success():
         content_type="application/json",
     )
 
-    tc = TraceClient()
+    tc = ApaaiClient()
     decision = tc.propose(
         type="send_email",
         actor=Actor(kind="agent", name="bot"),
@@ -42,7 +42,7 @@ def test_policy_filter():
         status=200,
         content_type="application/json",
     )
-    tc = TraceClient()
+    tc = ApaaiClient()
     pol = tc.policy("send_email")
     assert isinstance(pol, dict)
     assert len(pol.get("rules", [])) == 1

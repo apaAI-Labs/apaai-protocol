@@ -1,5 +1,5 @@
 import asyncio
-from trace_client import TraceClient, Actor, with_action
+from apaai_client import TraceClient, Actor, with_action
 import requests
 
 trace = TraceClient(endpoint="http://localhost:8787")

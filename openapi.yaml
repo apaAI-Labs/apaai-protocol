@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
-  title: TRACE Protocol API
+  title: APAAI Protocol API
   version: 0.1.0
   description: |
-    **TRACE Protocol** — Trusted Record of Autonomous Computational Events.
+    **APAAI Protocol** — Accountability Protocol for Agentic AI.
     
     An open standard for recording, auditing, and governing autonomous computation through the **Action → Policy → Evidence** loop.
     
@@ -16,33 +16,33 @@ info:
     
     ## SDKs Available
     
-    - **Python**: `pip install traceprotocol` ([PyPI](https://pypi.org/project/traceprotocol/))
-    - **TypeScript**: `npm install trace-protocol` ([npm](https://www.npmjs.com/package/trace-protocol))
+    - **Python**: `pip install apaai` ([PyPI](https://pypi.org/project/apaai/))
+    - **TypeScript**: `npm install apaai-protocol` ([npm](https://www.npmjs.com/package/apaai-protocol))
     
     ## Learn More
     
-    - [Website](https://traceprotocol.org)
-    - [Documentation](https://traceprotocol.org/spec.html)
-    - [GitHub Repository](https://github.com/trace-protocol/trace-protocol)
+    - [Website](https://apaai.org)
+    - [Documentation](https://apaai.org/spec.html)
+    - [GitHub Repository](https://github.com/apaai-protocol/apaai-protocol)
   contact:
-    name: TRACE Protocol Support
-    url: https://traceprotocol.org
-    email: support@traceprotocol.org
+    name: APAAI Protocol Support
+    url: https://apaai.org
+    email: support@apaai.org
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: https://traceprotocol.org/terms
+  termsOfService: https://apaai.org/terms
 servers:
   - url: http://localhost:8787
     description: Local reference server (development)
-  - url: https://api.traceprotocol.org
+  - url: https://api.apaai.org
     description: Production API server
 paths:
   /health:
     get:
       summary: Health check
       description: |
-        Check if the TRACE Protocol server is running and healthy.
+        Check if the APAAI Protocol server is running and healthy.
         
         This endpoint is useful for monitoring and load balancer health checks.
       tags:
@@ -73,7 +73,7 @@ paths:
         
         ## What are Policies?
         
-        Policies are the "rules engine" of TRACE Protocol. They define:
+        Policies are the "rules engine" of APAAI Protocol. They define:
         - **What actions are allowed** - Which autonomous actions can be proposed
         - **What approvals are required** - Human oversight requirements before execution
         - **What evidence must be collected** - Proof of successful completion

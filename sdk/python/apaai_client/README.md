@@ -1,14 +1,14 @@
 
-# traceprotocol
+# apaai
 
-[![PyPI version](https://img.shields.io/pypi/v/traceprotocol.svg)](https://pypi.org/project/traceprotocol/)
+[![PyPI version](https://img.shields.io/pypi/v/apaai.svg)](https://pypi.org/project/apaai/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
-**Python SDK for TRACE Protocol**
+**Python SDK for APAAI Protocol**
 
-Open, vendor-neutral SDK for the TRACE Protocol's **Action → Policy → Evidence** loop.
+Open, vendor-neutral SDK for the APAAI Protocol's **Action → Policy → Evidence** loop.
 
-- 📦 **Package**: `traceprotocol`
+- 📦 **Package**: `apaai`
 - 🔌 **Protocol**: HTTP/JSON (`/actions`, `/evidence`, `/policy`)
 - 🧪 **Simple & testable**: requests-based, no heavy dependencies
 - 🧱 **License**: Apache-2.0
@@ -18,7 +18,7 @@ Open, vendor-neutral SDK for the TRACE Protocol's **Action → Policy → Eviden
 ## Install
 
 ```bash
-pip install traceprotocol
+pip install apaai
 ```
 
 > **Reference server** (for local development):
@@ -157,7 +157,7 @@ Working examples are available in the main repository:
 
 ```bash
 # Install the package
-pip install traceprotocol
+pip install apaai
 
 # Start the reference server
 cd server && npm install && npm run dev
@@ -190,4 +190,4 @@ We cover: propose/evidence happy path, policy fetch/filter, approval flows, erro
 
 ## License
 
-Apache-2.0 © TRACE Labs — Stewards of the TRACE Protocol
+Apache-2.0 © apaAI Labs — Stewards of the APAAI Protocol

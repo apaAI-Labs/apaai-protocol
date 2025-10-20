@@ -1,4 +1,4 @@
-# TRACE Protocol — Examples
+# APAAI Protocol — Examples
 
 This folder contains runnable demos for both **JavaScript** (TypeScript SDK) and **Python** SDKs.  
 Each example walks through the full TRACE lifecycle: **Action → Policy → Evidence**.
@@ -118,4 +118,4 @@ Done.
 
 ---
 
-**TRACE Protocol — Trusted Record of Autonomous Computational Events**
+**APAAI Protocol — Trusted Record of Autonomous Computational Events**

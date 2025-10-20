@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
-  title: TRACE Protocol API
+  title: APAAI Protocol API
   version: 0.1.0
   description: |
-    TRACE — Trusted Record of Autonomous Computational Events.
+    TRACE — Accountability Protocol for Agentic AI.
     Minimal API for the Action → Policy → Evidence loop.
 servers:
   - url: http://localhost:8787

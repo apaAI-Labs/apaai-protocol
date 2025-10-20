@@ -9,7 +9,7 @@ export interface Storage {
 }
 
 export function makeStorage(app: FastifyInstance): Storage {
-  const kind = (process.env.TRACE_STORAGE || "file").toLowerCase();
+  const kind = (process.env.APAAI_STORAGE || "file").toLowerCase();
   app.log.info({ kind }, "TRACE storage driver");
   if (kind === "postgres") return new PostgresStorage(process.env.DATABASE_URL!);
   if (kind === "s3") {

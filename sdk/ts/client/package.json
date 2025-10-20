@@ -1,7 +1,7 @@
 {
-  "name": "@trace-protocol/client",
+  "name": "@apaai/client",
   "version": "0.1.2",
-  "description": "TRACE Protocol TypeScript SDK — Action → Policy → Evidence",
+  "description": "APAAI Protocol TypeScript SDK — Action → Policy → Evidence",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,7 @@
     }
   },
   "keywords": [
-    "trace",
+    "apaai",
     "protocol",
     "agent",
     "governance",
@@ -31,10 +31,10 @@
     "evidence"
   ],
   "license": "Apache-2.0",
-  "homepage": "https://traceprotocol.org",
+  "homepage": "https://apaaiprotocol.org",
   "repository": {
     "type": "git",
-    "url": "https://github.com/trace-protocol/trace-protocol"
+    "url": "https://github.com/apaai-protocol/apaai-protocol"
   },
   "publishConfig": {
     "access": "public"

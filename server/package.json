@@ -1,7 +1,7 @@
 {
-  "name": "trace-server",
+  "name": "apaai-server",
   "version": "0.1.0",
-  "description": "TRACE Protocol reference server (Fastify + TS)",
+  "description": "APAAI Protocol reference server (Fastify + TS)",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

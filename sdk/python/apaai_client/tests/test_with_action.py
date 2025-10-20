@@ -1,6 +1,6 @@
 import asyncio
 import responses
-from trace_client import TraceClient, Actor, with_action
+from apaai_client import ApaaiClient, Actor, with_action
 
 
 @responses.activate
@@ -20,7 +20,7 @@ def test_with_action_approved_path():
         content_type="application/json",
     )
 
-    trace = TraceClient()
+    trace = ApaaiClient()
 
     async def run():
         return {"id": "ok"}
@@ -58,7 +58,7 @@ def test_with_action_requires_approval_calls_hook():
         content_type="application/json",
     )
 
-    trace = TraceClient()
+    trace = ApaaiClient()
     called = {"v": False}
 
     async def on_approval(_info):

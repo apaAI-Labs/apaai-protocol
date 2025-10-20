@@ -7,7 +7,7 @@ from .api import TraceAPI
 from .utils import to_jsonable, normalize_checks
 from .types import Actor
 
-class TraceClient:
+class ApaaiClient:
     def __init__(self, endpoint: Optional[str] = None):
         self.api = TraceAPI(endpoint)
 

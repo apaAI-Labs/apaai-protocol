@@ -1,22 +1,22 @@
-# TRACE Protocol
+# APAAI Protocol
 
-[![npm version](https://img.shields.io/npm/v/@trace-protocol/client.svg)](https://www.npmjs.com/package/@trace-protocol/client)
-[![PyPI version](https://img.shields.io/pypi/v/traceprotocol.svg)](https://pypi.org/project/traceprotocol/)
+[![npm version](https://img.shields.io/npm/v/@apaai/client.svg)](https://www.npmjs.com/package/@apaai/client)
+[![PyPI version](https://img.shields.io/pypi/v/apaai.svg)](https://pypi.org/project/apaai/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
-**TRACE** — **T**rusted **R**ecords **o**f **A**utonomous **C**omputation **E**vents
+**APAAI** — **A**ccountability **P**rotocol **f**or **A**gentic **A**I
 
 Open standard for recording, auditing, and governing autonomous computation.
 
 > A verifiable framework for recording, auditing, and governing autonomous computation.
 
-TRACE Protocol defines a unified model — **Action → Policy → Evidence** — for recording, auditing, and governing autonomous computation. It enables organizations to adopt AI agents without losing traceability, safety, or accountability.
+APAAI Protocol defines a unified model — **Action → Policy → Evidence** — for recording, auditing, and governing autonomous computation. It enables organizations to adopt AI agents without losing traceability, safety, or accountability.
 
 ---
 
-## 🎯 What is TRACE Protocol?
+## 🎯 What is APAAI Protocol?
 
-TRACE lets you:
+APAAI lets you:
 
 - **Propose Actions** — define autonomous intents that require oversight  
 - **Enforce Policies** — require approvals, validations, or constraints  
@@ -28,7 +28,7 @@ TRACE lets you:
 ## 📁 Repository Structure
 
 ```
-trace-protocol/
+apaai-protocol/
 ├── schema/                      # JSON Schemas for validation
 ├── server/                      # Reference server implementation (TypeScript)
 ├── sdk/
@@ -57,14 +57,14 @@ npm run dev
 
 **TypeScript**
 ```bash
-npm install @trace-protocol/client
+npm install @apaai/client
 cd ../../..
 node examples/sendEmail.mjs
 ```
 
 **Python**
 ```bash
-pip install traceprotocol
+pip install apaai
 python examples/python/send_email.py
 ```
 
@@ -87,8 +87,8 @@ Define structure for Action, Policy, and Evidence.
 Reference backend implementing REST endpoints and storage backends (File, Postgres, S3).
 
 ### 📦 SDKs
-- **TypeScript SDK**: `@trace-protocol/client` ([npm](https://www.npmjs.com/package/@trace-protocol/client))
-- **Python SDK**: `traceprotocol` ([PyPI](https://pypi.org/project/traceprotocol/))
+- **TypeScript SDK**: `@apaai/client` ([npm](https://www.npmjs.com/package/@apaai/client))
+- **Python SDK**: `apaai` ([PyPI](https://pypi.org/project/apaai/))
 
 Both expose high-level helpers for proposing actions, enforcing policies, and emitting evidence.
 
@@ -101,9 +101,9 @@ Runnable examples covering the full Action → Policy → Evidence lifecycle.
 
 | Resource | Description |
 |----------|-------------|
-| [Main site](https://traceprotocol.org/) | Overview and rationale |
-| [Manifesto](https://traceprotocol.org/manifesto) | Principles and philosophy |
-| [Technical Spec](https://traceprotocol.org/spec.html) | Human-readable specification |
+| [Main site](https://apaai.org/) | Overview and rationale |
+| [Manifesto](https://apaai.org/manifesto) | Principles and philosophy |
+| [Technical Spec](https://apaai.org/spec.html) | Human-readable specification |
 | [OpenAPI](openapi.yaml) | Machine-readable API definition |
 
 ---

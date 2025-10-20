@@ -1,6 +1,6 @@
-# Contributing to TRACE Protocol
+# Contributing to APAAI Protocol
 
-Thank you for your interest in contributing to TRACE Protocol! This document provides guidelines for contributing to the project.
+Thank you for your interest in contributing to APAAI Protocol! This document provides guidelines for contributing to the project.
 
 ## 🎯 How to Contribute
 
@@ -30,8 +30,8 @@ Thank you for your interest in contributing to TRACE Protocol! This document pro
 ### Local Development
 ```bash
 # Clone and setup
-git clone https://github.com/your-org/trace-protocol.git
-cd trace-protocol
+git clone https://github.com/your-org/apaai-protocol.git
+cd apaai-protocol
 
 # Install server dependencies
 cd server && npm install && cd ..
@@ -200,8 +200,8 @@ Releases follow semantic versioning (SemVer):
 
 ## 📚 Resources
 
-- [TRACE Protocol Documentation](https://traceprotocol.org/)
-- [Technical Specification](https://traceprotocol.org/spec.html)
+- [APAAI Protocol Documentation](https://apaaiprotocol.org/)
+- [Technical Specification](https://apaaiprotocol.org/spec.html)
 - [OpenAPI Specification](openapi.yaml)
 - [Examples Directory](examples/)
 
@@ -214,4 +214,4 @@ Releases follow semantic versioning (SemVer):
 
 ---
 
-Thank you for contributing to TRACE Protocol! Together, we're building a more accountable future for autonomous systems.
+Thank you for contributing to APAAI Protocol! Together, we're building a more accountable future for autonomous systems.

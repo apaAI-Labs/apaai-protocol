@@ -1,13 +1,13 @@
-# @trace-protocol/client
+# @apaai/client
 
-[![npm version](https://img.shields.io/npm/v/@trace-protocol/client.svg)](https://www.npmjs.com/package/@trace-protocol/client)
+[![npm version](https://img.shields.io/npm/v/@apaai/client.svg)](https://www.npmjs.com/package/@apaai/client)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
-**TypeScript SDK for TRACE Protocol**
+**TypeScript SDK for APAAI Protocol**
 
-Open, vendor-neutral SDK for the TRACE Protocol's **Action → Policy → Evidence** loop.
+Open, vendor-neutral SDK for the APAAI Protocol's **Action → Policy → Evidence** loop.
 
-- 📦 **Package**: `@trace-protocol/client`
+- 📦 **Package**: `@apaai/client`
 - 🔌 **Protocol**: HTTP/JSON (`/actions`, `/evidence`, `/policy`)
 - 🧪 **Minimal & testable**: ESM-first, no heavy dependencies
 - 🧱 **License**: Apache-2.0
@@ -17,11 +17,11 @@ Open, vendor-neutral SDK for the TRACE Protocol's **Action → Policy → Eviden
 ## Install
 
 ```bash
-npm i @trace-protocol/client
+npm i @apaai/client
 # or
-pnpm add @trace-protocol/client
+pnpm add @apaai/client
 # or
-yarn add @trace-protocol/client
+yarn add @apaai/client
 ```
 
 > **Reference server** (for local development):
@@ -36,7 +36,7 @@ yarn add @trace-protocol/client
 ## Quickstart
 
 ```ts
-import { TraceClient } from "@trace-protocol/client";
+import { TraceClient } from "@apaai/client";
 
 const trace = new TraceClient({ endpoint: "http://localhost:8787" });
 
@@ -64,7 +64,7 @@ await trace.evidence(decision.actionId, [
 A convenience wrapper that does: **propose → (optional approval) → run → evidence**.
 
 ```ts
-import { TraceClient, withAction } from "@trace-protocol/client";
+import { TraceClient, withAction } from "@apaai/client";
 
 const trace = new TraceClient({ endpoint: "http://localhost:8787" });
 
@@ -251,4 +251,4 @@ npm -C sdk/ts/client publish --access public
 
 ## License
 
-Apache-2.0 © TRACE Protocol — Stewards of the TRACE Protocol
+Apache-2.0 © APAAI Protocol — Stewards of the APAAI Protocol
