@@ -1,13 +1,13 @@
 # apaai-client
 
-[![PyPI version](https://img.shields.io/pypi/v/apaai-client.svg)](https://pypi.org/project/apaai-client/)
+[![PyPI version](https://img.shields.io/pypi/v/apaai.svg)](https://pypi.org/project/apaai/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 **Python SDK for APAAI Protocol**
 
 Open, vendor-neutral SDK for the APAAI Protocol's **Action → Policy → Evidence** loop.
 
-- 📦 **Package**: `apaai-client`
+- 📦 **Package**: `apaai`
 - 🔌 **Protocol**: HTTP/JSON (`/actions`, `/evidence`, `/policy`)
 - 🧪 **Minimal & testable**: Class-based API
 - 🧱 **License**: Apache-2.0
@@ -17,7 +17,7 @@ Open, vendor-neutral SDK for the APAAI Protocol's **Action → Policy → Eviden
 ## Install
 
 ```bash
-pip install apaai-client
+pip install apaai
 ```
 
 > **Reference server** (for local development):
@@ -32,13 +32,14 @@ pip install apaai-client
 ## Quickstart
 
 ```py
-from apaai_client import AccountabilityLayer
+from apaai import AccountabilityLayer, AccountabilityLayerOptions
+import os
 
 # Initialize the accountability layer
-apaai = AccountabilityLayer(
-    endpoint="https://api.apaaiprotocol.org",
+apaai = AccountabilityLayer(AccountabilityLayerOptions(
+    endpoint="http://localhost:8787",
     api_key=os.getenv("APAAI_API_KEY")
-)
+))
 
 # 1) Propose an action
 decision = apaai.propose(
@@ -49,7 +50,7 @@ decision = apaai.propose(
 )
 
 # 2) Add evidence
-apaai.evidence.add(decision["actionId"], [
+apaai.evidence(decision["actionId"], [
     {"name": "email_sent", "pass": True, "note": "msgId=123"}
 ])
 ```
@@ -62,12 +63,13 @@ The `with_action` helper orchestrates the complete flow:
 
 ```py
 import asyncio
-from apaai_client import AccountabilityLayer, with_action
+from apaai import AccountabilityLayer, AccountabilityLayerOptions, with_action
+import os
 
-apaai = AccountabilityLayer(
-    endpoint="https://api.apaaiprotocol.org",
+apaai = AccountabilityLayer(AccountabilityLayerOptions(
+    endpoint="http://localhost:8787",
     api_key=os.getenv("APAAI_API_KEY")
-)
+))
 
 async def main():
     await with_action(

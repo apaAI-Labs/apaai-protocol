@@ -1,13 +1,13 @@
-# @apaai/ts-sdk
+# apaai-ts-sdk
 
-[![npm version](https://img.shields.io/npm/v/@apaai/ts-sdk.svg)](https://www.npmjs.com/package/@apaai/ts-sdk)
+[![npm version](https://img.shields.io/npm/v/apaai-ts-sdk.svg)](https://www.npmjs.com/package/apaai-ts-sdk)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 **TypeScript SDK for APAAI Protocol**
 
 Open, vendor-neutral SDK for the APAAI Protocol's **Action → Policy → Evidence** loop.
 
-- 📦 **Package**: `@apaai/ts-sdk`
+- 📦 **Package**: `apaai-ts-sdk`
 - 🔌 **Protocol**: HTTP/JSON (`/actions`, `/evidence`, `/policy`)
 - 🧪 **Minimal & testable**: ESM-first, class-based API
 - 🧱 **License**: Apache-2.0
@@ -17,11 +17,11 @@ Open, vendor-neutral SDK for the APAAI Protocol's **Action → Policy → Eviden
 ## Install
 
 ```bash
-npm i @apaai/ts-sdk
+npm i apaai-ts-sdk
 # or
-pnpm add @apaai/ts-sdk
+pnpm add apaai-ts-sdk
 # or
-yarn add @apaai/ts-sdk
+yarn add apaai-ts-sdk
 ```
 
 > **Reference server** (for local development):
@@ -36,11 +36,11 @@ yarn add @apaai/ts-sdk
 ## Quickstart
 
 ```ts
-import { AccountabilityLayer } from "@apaai/ts-sdk";
+import { AccountabilityLayer } from "apaai-ts-sdk";
 
 // Initialize the accountability layer
 const apaai = new AccountabilityLayer({ 
-  endpoint: "https://api.apaaiprotocol.org",
+  endpoint: "http://localhost:8787",
   apiKey: process.env.APAAI_API_KEY 
 });
 
@@ -65,10 +65,10 @@ await apaai.submitEvidence(decision.actionId, [
 The `withAction` helper orchestrates the complete flow:
 
 ```ts
-import { AccountabilityLayer, withAction } from "@apaai-labs/accountability";
+import { AccountabilityLayer, withAction } from "apaai-ts-sdk";
 
 const apaai = new AccountabilityLayer({ 
-  endpoint: "https://api.apaaiprotocol.org",
+  endpoint: "http://localhost:8787",
   apiKey: process.env.APAAI_API_KEY 
 });
 
@@ -144,7 +144,7 @@ const apaai = new AccountabilityLayer({
 ### Basic Flow
 
 ```ts
-import { AccountabilityLayer } from "@apaai/ts-sdk";
+import { AccountabilityLayer } from "apaai-ts-sdk";
 
 const apaai = new AccountabilityLayer({ endpoint: "http://localhost:8787" });
 
