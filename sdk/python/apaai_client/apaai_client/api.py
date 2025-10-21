@@ -2,7 +2,7 @@ from typing import Any, Dict, Optional
 import requests
 from urllib.parse import urlencode
 
-class TraceAPI:
+class ApaaiAPI:
     def __init__(self, endpoint: Optional[str] = None):
         self._endpoint = (endpoint or "http://localhost:8787").rstrip("/")
         self._session = requests.Session()

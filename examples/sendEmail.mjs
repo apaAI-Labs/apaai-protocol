@@ -1,9 +1,9 @@
-import { TraceClient } from "../sdk/ts/client/dist/index.js";
+import { AccountabilityLayer } from "../sdk/ts/client/dist/index.js";
 import { sendEmail } from "./lib/mailer.mjs";
 
-const trace = new TraceClient({ endpoint: "http://localhost:8787" });
+const apaai = new AccountabilityLayer({ endpoint: "http://localhost:8787" });
 
-const decision = await trace.propose({
+const decision = await apaai.propose({
   type: "send_email",
   actor: { kind: "agent", name: "mail-bot", provider: "openai" },
   target: "mailto:sarah@acme.com",
@@ -24,12 +24,12 @@ try {
     body: "Hi!"
   });
 
-  await trace.evidence(decision.actionId, [
+  await apaai.evidence.add(decision.actionId, [
     { name: "email_sent", pass: true, note: `msgId=${result.id}` }
   ]);
   console.log("Evidence submitted (success).");
 } catch (err) {
-  await trace.evidence(decision.actionId, [
+  await apaai.evidence.add(decision.actionId, [
     { name: "email_failed", pass: false, note: String(err?.message ?? err) }
   ]);
   console.log("Evidence submitted (failure).");

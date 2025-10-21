@@ -1,6 +1,6 @@
 import type { Action, Evidence, Decision, Policy } from "./types.js";
 
-export class TraceAPI {
+export class ApaaiAPI {
   private endpoint: string;
 
   constructor(endpoint?: string) {

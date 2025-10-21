@@ -1,8 +1,8 @@
 import asyncio
-from apaai_client import TraceClient, Actor, with_action
+from apaai import AccountabilityLayer, with_action
 import requests
 
-trace = TraceClient(endpoint="http://localhost:8787")
+apaai = AccountabilityLayer(endpoint="http://localhost:8787")
 
 def send_email(to: str, subject: str, body: str):
     # simulate a send and return metadata
@@ -25,9 +25,9 @@ def evidence_on_error(err):
 async def main():
     # Use the with_action helper for a concise one-liner flow
     await with_action(
-        trace=trace,
+        trace=apaai,
         type="send_email",
-        actor=Actor(kind="agent", name="mail-bot", provider="openai"),
+        actor={"kind": "agent", "name": "mail-bot", "provider": "openai"},
         target="mailto:sarah@acme.com",
         params={"subject": "Pricing", "body": "Hi!"},
         on_approval=on_approval,

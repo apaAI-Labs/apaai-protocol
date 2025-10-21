@@ -1,12 +1,12 @@
-from apaai_client import TraceClient, Actor
+from apaai import AccountabilityLayer
 import requests
 
-trace = TraceClient(endpoint="http://localhost:8787")
+apaai = AccountabilityLayer(endpoint="http://localhost:8787")
 
 # 1) Propose an action
-decision = trace.propose(
+decision = apaai.propose(
     type="send_email",
-    actor=Actor(kind="agent", name="mail-bot", provider="openai"),
+    actor={"kind": "agent", "name": "mail-bot", "provider": "openai"},
     target="mailto:sarah@acme.com",
     params={"subject": "Pricing", "body": "Hi!"}
 )
@@ -25,7 +25,7 @@ def send_email(to: str, subject: str, body: str):
 result = send_email("sarah@acme.com", "Pricing", "Hi!")
 
 # 4) Attach evidence (success)
-trace.evidence(decision["actionId"], [
+apaai.evidence.add(decision["actionId"], [
     {"name": "email_sent", "pass": True, "note": f"id={result['id']}"}
 ])
 print("Evidence submitted.")

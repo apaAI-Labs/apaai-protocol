@@ -1,16 +1,22 @@
-# APAAI Protocol
+# APAAI Protocol — Accountability Layer for Agentic AI
 
-[![npm version](https://img.shields.io/npm/v/@apaai/client.svg)](https://www.npmjs.com/package/@apaai/client)
-[![PyPI version](https://img.shields.io/pypi/v/apaai.svg)](https://pypi.org/project/apaai/)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+APAAI is the open protocol that turns agent intent into verifiable outcomes — **Action → Policy → Evidence**.
 
-**APAAI** — **A**ccountability **P**rotocol **f**or **A**gentic **A**I
+**Install**
+```bash
+npm i @apaai/accountability
+pip install apaai
+```
 
-Open standard for recording, auditing, and governing autonomous computation.
+**Use**
 
-> A verifiable framework for recording, auditing, and governing autonomous computation.
+```ts
+import { AccountabilityLayer } from "@apaai/accountability";
 
-APAAI Protocol defines a unified model — **Action → Policy → Evidence** — for recording, auditing, and governing autonomous computation. It enables organizations to adopt AI agents without losing traceability, safety, or accountability.
+const al = new AccountabilityLayer({ apiKey: process.env.APAAI_API_KEY });
+// or:
+const apaai = new AccountabilityLayer({ apiKey: process.env.APAAI_API_KEY });
+```
 
 ---
 

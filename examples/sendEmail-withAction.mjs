@@ -1,11 +1,11 @@
-import { TraceClient, withAction } from "../sdk/ts/client/dist/index.js";
+import { AccountabilityLayer, withAction } from "../sdk/ts/client/dist/index.js";
 import { sendEmail } from "./lib/mailer.mjs";
 
-const trace = new TraceClient({ endpoint: "http://localhost:8787" });
+const apaai = new AccountabilityLayer({ endpoint: "http://localhost:8787" });
 
 
 await withAction({
-  trace,
+  trace: apaai,
   type: "send_email",
   actor: { kind: "agent", name: "mail-bot", provider: "openai" },
   target: "mailto:sarah@acme.com",
