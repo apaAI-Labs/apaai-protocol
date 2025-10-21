@@ -1,7 +1,7 @@
-from apaai import AccountabilityLayer
+from apaai_client import AccountabilityLayer, AccountabilityLayerOptions
 import requests
 
-apaai = AccountabilityLayer(endpoint="http://localhost:8787")
+apaai = AccountabilityLayer(AccountabilityLayerOptions(endpoint="http://localhost:8787"))
 
 # 1) Propose an action
 decision = apaai.propose(
@@ -25,7 +25,7 @@ def send_email(to: str, subject: str, body: str):
 result = send_email("sarah@acme.com", "Pricing", "Hi!")
 
 # 4) Attach evidence (success)
-apaai.evidence.add(decision["actionId"], [
+apaai.evidence(decision["actionId"], [
     {"name": "email_sent", "pass": True, "note": f"id={result['id']}"}
 ])
 print("Evidence submitted.")

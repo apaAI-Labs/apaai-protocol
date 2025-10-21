@@ -1,28 +1,40 @@
 import { describe, it, createExpect } from "vitest";
 
 const expect = createExpect() as unknown as <T>(actual: T, message?: string) => any;
-import { TraceLike, Actor } from "../src/types";
-import { withAction } from "../src/withAction";
+import { AccountabilityLayer, Actor, withAction } from "../src/index";
 
-const fakeTrace = (status: "approved" | "requires_approval"): TraceLike => ({
+const fakeApaai = (status: "approved" | "requires_approval"): AccountabilityLayer => ({
+  async createAction() {
+    return { actionId: "a_1", status };
+  },
   async propose() {
     return { actionId: "a_1", status };
   },
-  async evidence() {
+  async submitEvidence() {
     return { verified: true };
   },
-  async policy() { return { rules: [] }; }
-});
+  async policy() { return { rules: [] }; },
+  async approve() { return { verified: true }; },
+  async reject() { return { verified: true }; },
+  async getAction() { return {} as any; },
+  async listActions() { return []; },
+  async getEvidence() { return {} as any; },
+  async setPolicy() { return { rules: [] }; },
+  get policies() { return { evaluate: async () => ({}), enforce: async () => ({}), set: async () => ({}) }; },
+  get human() { return { approve: async () => ({}), reject: async () => ({}) }; },
+  get evidence() { return { add: async () => ({}), get: async () => ({}) }; },
+  get actions() { return { get: async () => ({}), list: async () => [] }; }
+} as any);
 
 const actor: Actor = { kind: "agent", name: "bot" };
 
 describe("withAction", () => {
   it("runs and sends success evidence", async () => {
     const res = await withAction({
-      trace: fakeTrace("approved"),
+      apaai: fakeApaai("approved"),
       type: "send_email",
       actor,
-      run: async () => ({ id: "ok" }),
+      execute: async () => ({ id: "ok" }),
       evidence: {
         onSuccess: (r) => [{ name: "email_sent", pass: true, note: `id=${(r as any).id}` }],
         onError: () => [{ name: "email_failed", pass: false }]
@@ -34,11 +46,11 @@ describe("withAction", () => {
   it("waits for approval when required", async () => {
     let waited = false;
     await withAction({
-      trace: fakeTrace("requires_approval"),
+      apaai: fakeApaai("requires_approval"),
       type: "send_email",
       actor,
       onApproval: async () => { waited = true; },
-      run: async () => ({}),
+      execute: async () => ({}),
       evidence: {
         onSuccess: () => [{ name: "email_sent", pass: true }],
         onError: () => [{ name: "email_failed", pass: false }]

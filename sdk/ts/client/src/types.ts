@@ -11,6 +11,8 @@ export interface Action {
   target?: string;
   params?: Record<string, unknown>;
   timestamp: string;
+  status?: "approved" | "rejected" | "requires_approval" | "observed";
+  checks?: string[];
 }
 
 export interface Check {
@@ -33,7 +35,7 @@ export interface Decision {
 }
 
 export interface PolicyRule {
-  when?: { actionType?: string };
+  when?: { action?: string; actionType?: string };
   /** list of check names (e.g., ["reviewer_approval"]) */
   require?: string[];
   /** enforce = block until satisfied; observe = log-only */
@@ -42,23 +44,4 @@ export interface PolicyRule {
 
 export interface Policy {
   rules: PolicyRule[];
-}
-
-/** Minimal shape used by helpers (for mocking/injection) */
-export interface TraceLike {
-  propose(input: {
-    type: string;
-    actor: Actor;
-    target?: string;
-    params?: Record<string, unknown>;
-    id?: string;
-    timestamp?: string;
-  }): Promise<Decision & { actionId: string }>;
-
-  evidence(
-    actionId: string,
-    checks: Check[]
-  ): Promise<{ verified: boolean }>;
-
-  policy?(actionType?: string): Promise<Policy | unknown>;
 }

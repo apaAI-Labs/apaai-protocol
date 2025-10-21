@@ -21,21 +21,21 @@ info:
     
     ## Learn More
     
-    - [Website](https://apaai.org)
-    - [Documentation](https://apaai.org/spec.html)
-    - [GitHub Repository](https://github.com/apaai-protocol/apaai-protocol)
+    - [Website](https://apaaiprotocol.org)
+    - [Documentation](https://apaaiprotocol.org/spec.html)
+    - [GitHub Repository](https://github.com/apaAI-Labs/apaai-protocol)
   contact:
     name: APAAI Protocol Support
-    url: https://apaai.org
-    email: support@apaai.org
+    url: https://apaaiprotocol.org
+    email: support@apaaiprotocol.org
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: https://apaai.org/terms
+  termsOfService: https://apaaiprotocol.org/terms
 servers:
   - url: http://localhost:8787
     description: Local reference server (development)
-  - url: https://api.apaai.org
+  - url: https://api.apaaiprotocol.org
     description: Production API server
 paths:
   /health:

@@ -1,4 +1,4 @@
-import { AccountabilityLayer } from "../sdk/ts/client/dist/index.js";
+import { AccountabilityLayer } from "@apaai/ts-sdk";
 import { sendEmail } from "./lib/mailer.mjs";
 
 const apaai = new AccountabilityLayer({ endpoint: "http://localhost:8787" });
@@ -24,12 +24,12 @@ try {
     body: "Hi!"
   });
 
-  await apaai.evidence.add(decision.actionId, [
+  await apaai.submitEvidence(decision.actionId, [
     { name: "email_sent", pass: true, note: `msgId=${result.id}` }
   ]);
   console.log("Evidence submitted (success).");
 } catch (err) {
-  await apaai.evidence.add(decision.actionId, [
+  await apaai.submitEvidence(decision.actionId, [
     { name: "email_failed", pass: false, note: String(err?.message ?? err) }
   ]);
   console.log("Evidence submitted (failure).");

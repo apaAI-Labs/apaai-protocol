@@ -107,9 +107,9 @@ Runnable examples covering the full Action → Policy → Evidence lifecycle.
 
 | Resource | Description |
 |----------|-------------|
-| [Main site](https://apaai.org/) | Overview and rationale |
-| [Manifesto](https://apaai.org/manifesto) | Principles and philosophy |
-| [Technical Spec](https://apaai.org/spec.html) | Human-readable specification |
+| [Main site](https://apaaiprotocol.org/) | Overview and rationale |
+| [Manifesto](https://apaaiprotocol.org/manifesto) | Principles and philosophy |
+| [Technical Spec](https://apaaiprotocol.org/spec.html) | Human-readable specification |
 | [OpenAPI](openapi.yaml) | Machine-readable API definition |
 
 ---

@@ -1,15 +1,15 @@
-# @apaai/client
+# @apaai/ts-sdk
 
-[![npm version](https://img.shields.io/npm/v/@apaai/client.svg)](https://www.npmjs.com/package/@apaai/client)
+[![npm version](https://img.shields.io/npm/v/@apaai/ts-sdk.svg)](https://www.npmjs.com/package/@apaai/ts-sdk)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 **TypeScript SDK for APAAI Protocol**
 
 Open, vendor-neutral SDK for the APAAI Protocol's **Action → Policy → Evidence** loop.
 
-- 📦 **Package**: `@apaai/client`
+- 📦 **Package**: `@apaai/ts-sdk`
 - 🔌 **Protocol**: HTTP/JSON (`/actions`, `/evidence`, `/policy`)
-- 🧪 **Minimal & testable**: ESM-first, no heavy dependencies
+- 🧪 **Minimal & testable**: ESM-first, class-based API
 - 🧱 **License**: Apache-2.0
 
 ---
@@ -17,11 +17,11 @@ Open, vendor-neutral SDK for the APAAI Protocol's **Action → Policy → Eviden
 ## Install
 
 ```bash
-npm i @apaai/client
+npm i @apaai/ts-sdk
 # or
-pnpm add @apaai/client
+pnpm add @apaai/ts-sdk
 # or
-yarn add @apaai/client
+yarn add @apaai/ts-sdk
 ```
 
 > **Reference server** (for local development):
@@ -36,219 +36,237 @@ yarn add @apaai/client
 ## Quickstart
 
 ```ts
-import { TraceClient } from "@apaai/client";
+import { AccountabilityLayer } from "@apaai/ts-sdk";
 
-const trace = new TraceClient({ endpoint: "http://localhost:8787" });
-
-const decision = await trace.propose({
-  type: "send_email",
-  actor: { kind: "agent", name: "mail-bot", provider: "openai" },
-  target: "mailto:sarah@acme.com",
-  params: { subject: "Pricing", body: "Hi!" },
+// Initialize the accountability layer
+const apaai = new AccountabilityLayer({ 
+  endpoint: "https://api.apaaiprotocol.org",
+  apiKey: process.env.APAAI_API_KEY 
 });
 
-if (decision.status === "requires_approval") {
-  // dev shortcut: simulate approval on the reference server
-  await fetch(`http://localhost:8787/approve/${decision.actionId}`, { method: "POST" });
-}
+// 1) Propose an action
+const decision = await apaai.propose({
+  type: "send_email",
+  actor: { kind: "agent", "name": "mail-bot" },
+  target: "mailto:client@acme.com",
+  params: { subject: "Proposal" }
+});
 
-await trace.evidence(decision.actionId, [
-  { name: "email_sent", pass: true, note: "msgId=123" },
+// 2) Add evidence
+await apaai.submitEvidence(decision.actionId, [
+  { name: "email_sent", pass: true, note: "msgId=123" }
 ]);
 ```
 
 ---
 
-## High-level helper (`withAction`)
+## withAction Helper
 
-A convenience wrapper that does: **propose → (optional approval) → run → evidence**.
+The `withAction` helper orchestrates the complete flow:
 
 ```ts
-import { TraceClient, withAction } from "@apaai/client";
+import { AccountabilityLayer, withAction } from "@apaai-labs/accountability";
 
-const trace = new TraceClient({ endpoint: "http://localhost:8787" });
+const apaai = new AccountabilityLayer({ 
+  endpoint: "https://api.apaaiprotocol.org",
+  apiKey: process.env.APAAI_API_KEY 
+});
 
 await withAction({
-  trace,
+  apaai,
   type: "send_email",
-  actor: { kind: "agent", name: "mail-bot" },
-  target: "mailto:sarah@acme.com",
-  params: { subject: "Pricing", body: "Hi!" },
-
+  actor: { kind: "agent", "name": "mail-bot" },
+  target: "mailto:client@acme.com",
+  params: { subject: "Proposal" },
+  
   onApproval: async ({ actionId }) => {
-    // dev shortcut — in prod: Slack, ticketing, etc.
-    await fetch(`http://localhost:8787/approve/${actionId}`, { method: "POST" });
+    // Handle approval workflow
+    await apaai.approve(actionId, "@reviewer");
   },
-
-  run: async () => {
-    // perform the side effect (send email, open PR, etc.)
-    return { id: "msg_123" };
+  
+  execute: async () => {
+    // Your business logic
+    return await sendEmail({ to: "client@acme.com", subject: "Proposal" });
   },
-
+  
   evidence: {
-    onSuccess: (res) => [{ name: "email_sent", pass: true, note: `id=${res.id}` }],
-    onError:  (err) => [{ name: "email_failed", pass: false, note: String(err) }],
-  },
+    onSuccess: (result) => [
+      { name: "email_sent", pass: true, note: `msgId=${result.id}` }
+    ],
+    onError: (err) => [
+      { name: "email_failed", pass: false, note: String(err) }
+    ]
+  }
 });
 ```
 
 ---
 
-## API
+## API Reference
 
-### `new TraceClient(opts?: { endpoint?: string })`
-
-* `endpoint` defaults to `http://localhost:8787`.
-
-### `propose(input) → Promise<Decision & { actionId: string }>`
-
-Registers an **Action** and returns a **Decision**.
+### AccountabilityLayer Class
 
 ```ts
-await trace.propose({
-  type: "open_pr",
-  actor: { kind: "agent", name: "repo-bot" },
-  target: "github://org/repo#branch",
-  params: { title: "feat: add X" },
+const apaai = new AccountabilityLayer({ 
+  endpoint?: string, 
+  apiKey?: string 
 });
 ```
 
-**Decision**
+### Core Methods
+
+- **`propose(action)`** - Propose an action and get a decision
+- **`submitEvidence(actionId, checks)`** - Submit evidence for an action
+- **`policy(actionType?)`** - Get policy for an action type
+- **`approve(actionId, approver?)`** - Approve an action
+- **`reject(actionId, reason?)`** - Reject an action
+- **`getAction(actionId)`** - Get action details
+- **`listActions(filters?)`** - List actions with filters
+- **`getEvidence(actionId)`** - Get evidence for an action
+- **`setPolicy(policy)`** - Set a policy
+
+### Manager Interfaces
+
+- **`apaai.policies.evaluate(actionId)`** - Evaluate policy for an action
+- **`apaai.policies.enforce(actionType)`** - Enforce policy for an action type
+- **`apaai.policies.set(policy)`** - Set a policy
+- **`apaai.human.approve(actionId, approver?)`** - Approve an action
+- **`apaai.human.reject(actionId, reason?)`** - Reject an action
+- **`apaai.evidence.add(actionId, checks)`** - Add evidence for an action
+- **`apaai.evidence.get(actionId)`** - Get evidence for an action
+- **`apaai.actions.get(actionId)`** - Get action details
+- **`apaai.actions.list(filters?)`** - List actions with filters
+
+---
+
+## Examples
+
+### Basic Flow
 
 ```ts
-type Decision = {
-  actionId: string;
-  status: "approved" | "rejected" | "requires_approval" | "observed";
-  checks?: string[]; // names required before approval
+import { AccountabilityLayer } from "@apaai/ts-sdk";
+
+const apaai = new AccountabilityLayer({ endpoint: "http://localhost:8787" });
+
+// Propose action
+const decision = await apaai.propose({
+  type: "send_email",
+  actor: { kind: "agent", name: "mail-bot" },
+  target: "mailto:client@acme.com",
+  params: { subject: "Proposal" }
+});
+
+// Handle approval if required
+if (decision.status === "requires_approval") {
+  await apaai.approve(decision.actionId, "@reviewer");
 }
-```
 
-### `evidence(actionId, checks) → Promise<{ verified: boolean }>`
-
-Attach **Evidence** checks to an action.
-
-```ts
-await trace.evidence("a_123", [
-  { name: "reviewer_approval", pass: true, approver: "@admin" }
+// Submit evidence
+await apaai.submitEvidence(decision.actionId, [
+  { name: "email_sent", pass: true, note: "msgId=123" }
 ]);
 ```
 
-### `policy(actionType?: string) → Promise<Policy>`
+### Using Manager Interfaces
 
-Fetch compiled policy (server may filter by `actionType`).
+```ts
+// Policy management
+const policy = await apaai.policies.enforce("send_email");
+await apaai.policies.set({ rules: [...] });
+
+// Human-in-the-loop
+await apaai.human.approve(actionId, "@reviewer");
+await apaai.human.reject(actionId, "Invalid recipient");
+
+// Evidence management
+await apaai.evidence.add(actionId, [
+  { name: "email_sent", pass: true, note: "msgId=123" }
+]);
+const evidence = await apaai.evidence.get(actionId);
+
+// Action management
+const action = await apaai.actions.get(actionId);
+const actions = await apaai.actions.list({ type: "send_email" });
+```
 
 ---
 
 ## Types
 
 ```ts
-export interface Actor {
-  kind: "agent" | "human" | "system";
+interface Actor {
+  kind: "agent" | "user" | "system";
   name: string;
   provider?: string;
 }
 
-export interface Action {
+interface Action {
   id: string;
+  timestamp: string;
   type: string;
   actor: Actor;
   target?: string;
   params?: Record<string, unknown>;
-  timestamp: string;
-}
-
-export interface Check {
-  name: string;
-  pass: boolean;
-  approver?: string;
-  note?: string;
-}
-
-export interface Evidence {
-  actionId: string;
-  checks: Check[];
-  timestamp?: string;
-}
-
-export interface Decision {
-  actionId: string;
-  status: "approved" | "rejected" | "requires_approval" | "observed";
+  status?: string;
   checks?: string[];
 }
 
-export interface PolicyRule {
-  when?: { actionType?: string };
+interface Check {
+  name: string;
+  pass: boolean;
+  note?: string;
+}
+
+interface Evidence {
+  actionId: string;
+  checks: Check[];
+}
+
+interface Decision {
+  status: "approved" | "requires_approval" | "rejected";
+  checks?: string[];
+}
+
+interface PolicyRule {
+  when?: { action?: string; actionType?: string };
   require?: string[];
   mode?: "enforce" | "observe";
 }
 
-export interface Policy {
+interface Policy {
   rules: PolicyRule[];
 }
 ```
 
 ---
 
-## Examples
-
-Working examples are available in the main repository:
-
-- `examples/sendEmail.mjs` - Low-level API usage
-- `examples/sendEmail-withAction.mjs` - High-level `withAction` helper
-- `examples/lib/mailer.mjs` - Shared utilities
-
-**Run the examples:**
-
-```bash
-# Build the SDK (if using local development)
-cd sdk/ts/client && npm install && npm run build
-
-# Start the reference server
-cd ../../server && npm install && npm run dev
-
-# Run examples (from repository root)
-node examples/sendEmail.mjs
-node examples/sendEmail-withAction.mjs
-```
-
----
-
 ## Testing
 
-This package uses **Vitest**.
-
 ```bash
-npm -C sdk/ts/client i
-npm -C sdk/ts/client run test
-```
+# Run tests
+npm test
 
-> We keep TS build config separate from test config to avoid rootDir warnings.
-> If your editor shows stale type errors, **restart TS server**.
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+```
 
 ---
 
 ## Build & Publish
 
 ```bash
-# build
-npm -C sdk/ts/client run build
+# Build the package
+npm run build
 
-# preview tarball
-npm -C sdk/ts/client pack --dry-run
-
-# publish
-npm -C sdk/ts/client publish --access public
+# Publish to npm
+npm publish
 ```
-
----
-
-## Versioning
-
-* **v0.1**: observer mode + optional human-in-the-loop; Python parity
-* Roadmap: Checkers API (programmatic checks), signatures & hash-chain evidence
 
 ---
 
 ## License
 
-Apache-2.0 © APAAI Protocol — Stewards of the APAAI Protocol
+Apache-2.0

@@ -1,6 +1,6 @@
 import asyncio
 import responses
-from apaai_client import ApaaiClient, Actor, with_action
+from apaai_client import AccountabilityLayer, AccountabilityLayerOptions, Actor, with_action
 
 
 @responses.activate
@@ -20,19 +20,19 @@ def test_with_action_approved_path():
         content_type="application/json",
     )
 
-    trace = ApaaiClient()
+    apaai = AccountabilityLayer(AccountabilityLayerOptions())
 
     async def run():
         return {"id": "ok"}
 
     async def main():
         res = await with_action(
-            trace=trace,
+            apaai=apaai,
             type="send_email",
             actor=Actor(kind="agent", name="bot"),
             target="mailto:client@acme.com",
             params={"subject": "Hi"},
-            run=run,
+            execute=run,
             evidence_on_success=lambda r: [{"name": "email_sent", "pass": True, "note": f"id={r['id']}"}],
             evidence_on_error=lambda e: [{"name": "email_failed", "pass": False, "note": str(e)}],
         )
@@ -58,7 +58,7 @@ def test_with_action_requires_approval_calls_hook():
         content_type="application/json",
     )
 
-    trace = ApaaiClient()
+    apaai = AccountabilityLayer(AccountabilityLayerOptions())
     called = {"v": False}
 
     async def on_approval(_info):
@@ -69,11 +69,11 @@ def test_with_action_requires_approval_calls_hook():
 
     async def main():
         await with_action(
-            trace=trace,
+            apaai=apaai,
             type="send_email",
             actor=Actor(kind="agent", name="bot"),
             on_approval=on_approval,
-            run=run,
+            execute=run,
             evidence_on_success=lambda r: [{"name": "email_sent", "pass": True}],
             evidence_on_error=lambda e: [{"name": "email_failed", "pass": False, "note": str(e)}],
         )

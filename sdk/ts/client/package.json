@@ -1,5 +1,5 @@
 {
-  "name": "@apaai/client",
+  "name": "@apaai/ts-sdk",
   "version": "0.1.2",
   "description": "APAAI Protocol TypeScript SDK — Action → Policy → Evidence",
   "type": "module",
@@ -34,7 +34,7 @@
   "homepage": "https://apaaiprotocol.org",
   "repository": {
     "type": "git",
-    "url": "https://github.com/apaai-protocol/apaai-protocol"
+    "url": "https://github.com/apaAI-Labs/apaai-protocol"
   },
   "publishConfig": {
     "access": "public"

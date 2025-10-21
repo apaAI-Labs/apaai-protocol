@@ -1,11 +1,10 @@
-import { AccountabilityLayer, withAction } from "../sdk/ts/client/dist/index.js";
+import { AccountabilityLayer, withAction } from "@apaai/ts-sdk";
 import { sendEmail } from "./lib/mailer.mjs";
 
 const apaai = new AccountabilityLayer({ endpoint: "http://localhost:8787" });
 
-
 await withAction({
-  trace: apaai,
+  apaai,
   type: "send_email",
   actor: { kind: "agent", name: "mail-bot", provider: "openai" },
   target: "mailto:sarah@acme.com",
@@ -22,8 +21,8 @@ await withAction({
     onError:  (err) => [{ name: "email_failed", pass: false, note: String(err?.message ?? err) }]
   },
 
-  run: async () => {
-    return sendEmail({  
+  execute: async () => {
+    return sendEmail({
       to: "sarah@acme.com",
       subject: "Pricing",
       body: "Hi!"

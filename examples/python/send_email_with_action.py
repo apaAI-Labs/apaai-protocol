@@ -1,8 +1,8 @@
 import asyncio
-from apaai import AccountabilityLayer, with_action
+from apaai_client import AccountabilityLayer, AccountabilityLayerOptions, with_action
 import requests
 
-apaai = AccountabilityLayer(endpoint="http://localhost:8787")
+apaai = AccountabilityLayer(AccountabilityLayerOptions(endpoint="http://localhost:8787"))
 
 def send_email(to: str, subject: str, body: str):
     # simulate a send and return metadata
@@ -25,13 +25,13 @@ def evidence_on_error(err):
 async def main():
     # Use the with_action helper for a concise one-liner flow
     await with_action(
-        trace=apaai,
+        apaai=apaai,
         type="send_email",
         actor={"kind": "agent", "name": "mail-bot", "provider": "openai"},
         target="mailto:sarah@acme.com",
         params={"subject": "Pricing", "body": "Hi!"},
         on_approval=on_approval,
-        run=run_email,
+        execute=run_email,
         evidence_on_success=evidence_on_success,
         evidence_on_error=evidence_on_error
     )

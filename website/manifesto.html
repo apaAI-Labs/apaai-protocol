@@ -3,27 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>APAAI Manifesto — Autonomy demands accountability</title>
-  <meta name="description" content="Build agents that are not only capable — but accountable." />
 
-  <!-- Favicons / OG (match index structure) -->
+  <title>APAAI Manifesto — Autonomy demands Accountability</title>
+  <meta name="description" content="APAAI is the open protocol behind the Accountability Layer for Agentic AI — Action → Policy → Evidence." />
+
   <link rel="icon" href="/favicon.ico">
 
+  <!-- OG/Twitter -->
   <meta property="og:type" content="article">
   <meta property="og:title" content="APAAI Protocol Manifesto">
-  <meta property="og:description" content="Build agents that are not only capable — but accountable.">
+  <meta property="og:description" content="APAAI is the open protocol behind the Accountability Layer for Agentic AI — Action → Policy → Evidence.">
   <meta property="og:url" content="https://apaaiprotocol.org/manifesto">
   <meta property="og:image" content="https://apaaiprotocol.org/og.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-
+  <meta property="og:image:alt" content="APAAI Protocol — Accountability Layer for Agentic AI">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="APAAI Protocol Manifesto">
-  <meta name="twitter:description" content="Build agents that are not only capable — but accountable.">
+  <meta name="twitter:description" content="APAAI is the open protocol behind the Accountability Layer for Agentic AI — Action → Policy → Evidence.">
   <meta name="twitter:image" content="https://apaaiprotocol.org/og.png">
 
-  <!-- Prism (kept to match index toolchain; safe if unused here) -->
+  <!-- Prism (optional) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
   <script>
@@ -34,126 +35,87 @@
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
 
-  <!-- SAME SITE STYLES AS INDEX -->
   <style>
     :root{
       --bg:#f8fafc; --panel:#fff; --text:#0f172a; --muted:#475569; --line:#e2e8f0;
       --brand:#0f172a; --brand-ghost:#eef2f7; --code-bg:#0b1220; --radius:14px;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;background:var(--bg);color:var(--text);
-      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;
-      line-height:1.6;
-    }
-    a{color:var(--text);text-decoration:none}
-    a:hover{text-decoration:underline}
-
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Helvetica,Arial;line-height:1.6}
+    a{color:var(--text);text-decoration:none} a:hover{text-decoration:underline}
     .container{max-width:860px;margin:0 auto;padding:0 24px}
-
     header{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line)}
     .nav{height:64px;display:flex;align-items:center;justify-content:space-between}
     .brand{display:flex;align-items:center;gap:12px}
     .brand img{height:48px;width:auto;display:block}
     @media (max-width:860px){ .brand img{height:40px} }
     .brand span{font-weight:700}
-
     .menu{display:flex;gap:18px}
-
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;
-      border:1px solid var(--line);background:var(--panel);color:var(--text)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--panel)}
     .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
     .btn.ghost{background:var(--brand-ghost)}
-
     .hero{padding:56px 0 28px}
     .hero h1{margin:0 0 8px;font-size:clamp(28px,4.2vw,40px)}
     .hero p{margin:0 0 18px}
     .hero .tagline{color:var(--muted);font-style:italic}
-
     .section{padding:32px 0;border-top:1px solid var(--line)}
     .section h2{margin:0 0 10px;font-size:22px}
     .muted{color:var(--muted)}
     .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
-    pre{margin:0}
     .code{background:var(--code-bg);border-radius:12px;padding:16px;overflow:auto;border:1px solid #1e293b}
-
     footer{padding:44px 0 60px;color:var(--muted);font-size:14px}
-
-    /* responsive header controls (same as index) */
     .nav-actions .btn{padding:8px 12px;border-radius:8px}
     @media (max-width:860px){ .menu,.nav-actions{display:none!important} .hamburger{display:inline-flex!important} }
-    .hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--line);
-      border-radius:10px;background:var(--panel);cursor:pointer}
-    .mobile-panel{position:fixed;inset:64px 0 0 0;background:var(--panel);border-top:1px solid var(--line);
-      padding:16px 24px;display:none;z-index:50}
+    .hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--panel);cursor:pointer}
+    .mobile-panel{position:fixed;inset:64px 0 0 0;background:var(--panel);border-top:1px solid var(--line);padding:16px 24px;display:none;z-index:50}
     .mobile-panel a{display:block;padding:12px 0;border-bottom:1px solid var(--line)}
-    .mobile-panel .btn{margin-top:12px;display:inline-flex}
-    /* tiny gradient rule used under hero paragraph */
-    .rule{height:3px;width:220px;border-radius:2px;background:linear-gradient(90deg,#4F46E5,#3B82F6,#34D399)}
   </style>
 </head>
 
 <body>
-  <!-- Header (EXACT header system & asset as index) -->
+  <!-- Header -->
   <header>
     <div class="container nav">
       <a class="brand" href="/" aria-label="APAAI Protocol home">
         <img src="/assets/brand/logo_icon.png" alt="APAAI logo">
         <span>APAAI Protocol</span>
       </a>
-  
       <div class="nav-actions">
         <nav class="menu" aria-label="Primary">
-          <!-- Compact: Home · OpenAPI · GitHub -->
           <a href="/">Home</a>
-          <a href="https://github.com/apaAI-Labs/apaai-protocol" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/apaAI-labs/apaaI-protocol" target="_blank" rel="noopener">GitHub</a>
         </nav>
       </div>
-  
       <button class="hamburger" aria-label="Menu" aria-controls="mobile-panel" aria-expanded="false">☰</button>
     </div>
-  
-    <!-- Mobile panel (compact) -->
     <div id="mobile-panel" class="mobile-panel" aria-hidden="true">
       <a href="/">Home</a>
-      <a href="https://github.com/apaAI-Labs/apaai-protocol" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/apaAI-labs/apaaI-protocol" target="_blank" rel="noopener">GitHub</a>
     </div>
   </header>
 
-  <!-- Hero (same spacing scale as index.hero) -->
+  <!-- Hero -->
   <main class="container">
     <section class="hero">
-      <h1>Autonomy demands accountability</h1>
-      <p class="tagline">The Accountability Layer for Agentic AI.</p>
-      <p class="muted">
-        Build agents that are not only capable — <em>but accountable</em>.
+      <h1>Autonomy demands Accountability</h1>
+      <p class="tagline">
+        The APAAI Protocol defines the accountability loop for agentic AI — <strong>Action → Policy → Evidence</strong>.
       </p>
       <p class="muted">
-        APAAI is the open protocol that turns agent intent into verifiable records: <strong>Action → Policy → Evidence</strong>.
+        Modern agents execute code, move funds, and publish content. APAAI ensures those actions carry a verifiable record of why and how they occurred.
       </p>
-      <div class="rule" style="margin:12px 0 0;"></div>
     </section>
 
-    <!-- Pull quote in same rhythm -->
-    <section class="section" style="border-top:none;padding-top:8px">
-      <div class="card" style="border-style:dashed">
-        <p style="margin:0;font-style:italic;font-size:18px">
-          Build agents that are not only capable — but accountable.
-        </p>
-      </div>
-    </section>
-
-    <!-- Article body with SAME section styling -->
+    <!-- Why -->
     <section class="section">
       <h2>Why APAAI exists</h2>
       <p class="muted">
-        Modern agents can file PRs, trigger invoices, and publish content. What's missing is a programmable layer that explains
-        <em>why</em> an action was taken, <em>which</em> policies applied, and <em>what</em> evidence proves it. 
-        APAAI provides that layer — the Accountability Layer for Agentic AI.
+        Existing agent frameworks execute actions without consistent accountability. APAAI introduces a common record schema and policy interface that bridges intent, execution, and evidence across models and platforms.
       </p>
     </section>
 
+    <!-- Core loop -->
     <section class="section">
       <h2>The core loop</h2>
       <div class="code">
@@ -164,72 +126,74 @@
 • Evidence — attestable outcomes (checks, artifacts, signatures)</code></pre>
       </div>
       <p class="muted" style="margin-top:12px">
-        The protocol doesn’t dictate storage, identity, or cryptography; it defines the <em>shape</em> of the record so
-        implementations can vary while remaining interoperable.
+        The protocol does not prescribe storage, identity, or cryptography; it defines the record shape so implementations vary while remaining interoperable.
       </p>
     </section>
 
+    <!-- Principles -->
     <section class="section">
       <h2>Principles</h2>
       <ul>
-        <li><strong>Open by default</strong> — Apache-2.0 code, public RFCs, community stewardship.</li>
-        <li><strong>Model &amp; vendor agnostic</strong> — compatible with any LLM/tool/runtime.</li>
-        <li><strong>Human-in-the-loop</strong> — approvals and overrides as first-class policy.</li>
-        <li><strong>Minimal primitives</strong> — small surface; pluggable storage and identity.</li>
-        <li><strong>Provability</strong> — evidence others can verify independently.</li>
+        <li><strong>Neutrality</strong> — independent of model provider or runtime.</li>
+        <li><strong>Transparency</strong> — records explain why and how, not just what.</li>
+        <li><strong>Human Oversight</strong> — review/approval as first-class policy.</li>
+        <li><strong>Interoperability</strong> — minimal schema; extensible via RFCs.</li>
+        <li><strong>Verifiability</strong> — evidence others can independently validate.</li>
       </ul>
     </section>
 
+    <!-- Governance -->
     <section class="section">
       <h2>Governance</h2>
       <p class="muted">
-        apaAI Labs stewards the protocol, reference server, and SDKs. Substantial changes land through open RFCs,
-        community review, and versioned specs. Implementation freedom is encouraged; interoperability is required.
+        APAAI defines accountability primitives; governance is intentionally out of scope. The protocol enables governance by ensuring consistent per-action records of intent, applied policy, and evidence. apaAI Labs stewards the reference server, SDKs, and the RFC process. Changes follow public discussion and semantic versioning.
       </p>
     </section>
 
+    <!-- Non-goals -->
     <section class="section">
       <h2>Non-goals</h2>
       <ul>
         <li>Not a full agent framework or LLM runtime.</li>
-        <li>Not a centralized trust authority or a walled garden.</li>
-        <li>Not tied to any specific storage, identity, or cloud.</li>
+        <li>Not a centralized trust authority or walled garden.</li>
+        <li>Not tied to a specific storage, identity system, or cloud.</li>
       </ul>
     </section>
 
+    <!-- License -->
     <section class="section">
       <h2>Licensing</h2>
       <p class="muted">
-        <strong>Code and reference implementations:</strong> Apache-2.0<br>
+        <strong>Code & reference implementations:</strong> Apache-2.0<br>
         <strong>Specification:</strong> CC BY 4.0
       </p>
     </section>
 
+    <!-- CTA -->
     <section class="section">
-      <h2>Call to action</h2>
+      <h2>Participate</h2>
       <p class="muted">
-        If your systems take action, they should leave a trail. Adopt the primitives. Propose improvements.
-        Contribute integrations. Build agents that are not only capable — but accountable.
+        If your systems take action, they should leave a trail. Adopt the primitives, propose improvements, and contribute integrations.
       </p>
       <div class="actions" style="margin-top:8px">
-        <a class="btn" href="https://github.com/apaAI-Labs/apaai-protocol/discussions" target="_blank" rel="noreferrer">Join discussions</a>
-        <a class="btn primary" href="https://github.com/apaAI-Labs/apaai-protocol" target="_blank" rel="noreferrer">Contribute on GitHub</a>
+        <a class="btn" href="https://github.com/apaAI-labs/apaaI-protocol/discussions" target="_blank" rel="noreferrer">Join discussions</a>
+        <a class="btn primary" href="https://github.com/apaAI-labs/apaaI-protocol" target="_blank" rel="noreferrer">Contribute on GitHub</a>
         <a class="btn ghost" href="/">← Back to Home</a>
       </div>
     </section>
   </main>
 
-  <!-- Footer (identical structure) -->
+  <!-- Footer -->
   <footer class="container">
     <div style="border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-      <span>© 2025 apaAI Labs — Creators and Maintainers of the APAAI Protocol • Apache-2.0 License</span>
+      <span>© 2025 apaAI Labs · Maintainers of the APAAI Protocol (Accountability Protocol for Agentic AI) · RFC-2025-001 · Apache-2.0 License</span>
       <span class="muted">
         <a href="mailto:spec@apaaiprotocol.org">spec@apaaiprotocol.org</a>
       </span>
     </div>
   </footer>
 
-  <!-- Mobile menu toggle (same script as index) -->
+  <!-- Mobile menu toggle -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const btn = document.querySelector('.hamburger');

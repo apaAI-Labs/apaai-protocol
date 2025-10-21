@@ -1,5 +1,5 @@
 import responses
-from apaai_client import ApaaiClient, Actor
+from apaai_client import AccountabilityLayer, AccountabilityLayerOptions, Actor
 
 
 @responses.activate
@@ -21,7 +21,7 @@ def test_propose_and_evidence_success():
         content_type="application/json",
     )
 
-    tc = ApaaiClient()
+    tc = AccountabilityLayer(AccountabilityLayerOptions())
     decision = tc.propose(
         type="send_email",
         actor=Actor(kind="agent", name="bot"),
@@ -42,7 +42,7 @@ def test_policy_filter():
         status=200,
         content_type="application/json",
     )
-    tc = ApaaiClient()
+    tc = AccountabilityLayer(AccountabilityLayerOptions())
     pol = tc.policy("send_email")
     assert isinstance(pol, dict)
     assert len(pol.get("rules", [])) == 1
