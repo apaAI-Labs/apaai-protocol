@@ -1,5 +1,5 @@
 {
-  "name": "@apaai/ts-sdk",
+  "name": "apaai-ts-sdk",
   "version": "0.1.2",
   "description": "APAAI Protocol TypeScript SDK — Action → Policy → Evidence",
   "type": "module",

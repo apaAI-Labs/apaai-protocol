@@ -1,4 +1,4 @@
-import { AccountabilityLayer } from "@apaai/ts-sdk";
+import { AccountabilityLayer } from "apaai-ts-sdk";
 import { sendEmail } from "./lib/mailer.mjs";
 
 const apaai = new AccountabilityLayer({ endpoint: "http://localhost:8787" });
