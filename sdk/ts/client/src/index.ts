@@ -1,5 +1,6 @@
 // src/index.ts
-import type { Action, Evidence, Decision, Policy } from "./types.js";
+import type { Action, Evidence, Decision, Policy, Agent, CreateAgentInput, UpdateAgentInput, BootstrapInput, BootstrapResult, PolicyDiscoveryResult, ProposePolicyInput, ApproverIdentity } from "./types.js";
+import { sleep } from "./utils.js";
 
 /** ---- Public Client ----------------------------------------------------- */
 export type AccountabilityLayerOptions = {
@@ -8,16 +9,63 @@ export type AccountabilityLayerOptions = {
   headers?: Record<string, string>;  // extra headers to send on every request
 };
 
+/** Agent operations namespace */
+class AgentsAPI {
+  constructor(private client: AccountabilityLayer) {}
+
+  /** Register a new agent */
+  async register(input: CreateAgentInput): Promise<Agent> {
+    return this.client['post']('/agents', input);
+  }
+
+  /** List all agents for the organization */
+  async list(filters?: { status?: string; limit?: number }): Promise<Agent[]> {
+    const params = new URLSearchParams();
+    if (filters?.status) params.set('status', filters.status);
+    if (filters?.limit) params.set('limit', String(filters.limit));
+    const qs = params.toString();
+    return this.client['get'](`/agents${qs ? `?${qs}` : ''}`);
+  }
+
+  /** Get a single agent by ID */
+  async get(agentId: string): Promise<Agent> {
+    return this.client['get'](`/agents/${encodeURIComponent(agentId)}`);
+  }
+
+  /** Update an agent */
+  async update(agentId: string, input: UpdateAgentInput): Promise<Agent> {
+    return this.client['patch'](`/agents/${encodeURIComponent(agentId)}`, input);
+  }
+
+  /** Delete (disable) an agent */
+  async delete(agentId: string): Promise<{ success: boolean; message: string }> {
+    return this.client['del'](`/agents/${encodeURIComponent(agentId)}`);
+  }
+
+  /** List actions for an agent */
+  async listActions(agentId: string, filters?: { status?: string; limit?: number }): Promise<Action[]> {
+    const params = new URLSearchParams();
+    if (filters?.status) params.set('status', filters.status);
+    if (filters?.limit) params.set('limit', String(filters.limit));
+    const qs = params.toString();
+    return this.client['get'](`/agents/${encodeURIComponent(agentId)}/actions${qs ? `?${qs}` : ''}`);
+  }
+}
+
 export class AccountabilityLayer {
   private base: string;
   private apiKey?: string;
   private extra: Record<string, string>;
-  private static UA = "apaai-js/0.1.0";
+  private static UA = "apaai-js/0.2.0";
+
+  /** Agent management API */
+  public readonly agents: AgentsAPI;
 
   constructor(opts: AccountabilityLayerOptions = {}) {
     this.base = (opts.endpoint ?? "http://localhost:8787").replace(/\/+$/, "");
     this.apiKey = opts.apiKey;
     this.extra = opts.headers ?? {};
+    this.agents = new AgentsAPI(this);
   }
 
   /** Core request helper */
@@ -58,6 +106,15 @@ export class AccountabilityLayer {
       method: "POST",
       body: body == null ? undefined : JSON.stringify(body),
     });
+  }
+  private patch<T>(path: string, body?: unknown) {
+    return this.request<T>(path, {
+      method: "PATCH",
+      body: body == null ? undefined : JSON.stringify(body),
+    });
+  }
+  private del<T>(path: string) {
+    return this.request<T>(path, { method: "DELETE" });
   }
 
   // ---- High-level methods (1:1 with protocol) ----
@@ -114,6 +171,72 @@ export class AccountabilityLayer {
   async rejectAction(actionId: string, reason?: string): Promise<{ verified: boolean }> {
     return this.post(`/reject/${encodeURIComponent(actionId)}`, { reason });
   }
+
+  // ---- Agentic-first methods ----
+
+  /** Bootstrap: self-register using an enrollment key. No auth required. */
+  async bootstrap(input: BootstrapInput): Promise<BootstrapResult> {
+    const result = await this.request<BootstrapResult>("/agents/bootstrap", {
+      method: "POST",
+      body: JSON.stringify(input),
+    });
+    // Auto-configure this client with the returned agent token
+    this.apiKey = result.agentToken;
+    return result;
+  }
+
+  /** Discover all policies applicable to this agent (requires agent token) */
+  async discoverPolicies(): Promise<PolicyDiscoveryResult> {
+    return this.get("/agents/me/policies");
+  }
+
+  /** Get this agent's profile (requires agent token) */
+  async me(): Promise<Agent> {
+    return this.get("/agents/me");
+  }
+
+  /** Approve an action with approver identity */
+  async approveWithIdentity(actionId: string, note?: string, approver?: ApproverIdentity): Promise<{ action: any; webhookResults?: any[]; createdPolicyId?: string }> {
+    return this.post(`/actions/${encodeURIComponent(actionId)}/approve`, { note, approver });
+  }
+
+  /** Reject an action with approver identity */
+  async rejectWithIdentity(actionId: string, note?: string, approver?: ApproverIdentity): Promise<{ action: any }> {
+    return this.post(`/actions/${encodeURIComponent(actionId)}/reject`, { note, approver });
+  }
+
+  /** Propose a new policy (creates a propose_policy action that requires human approval) */
+  async proposePolicy(policy: ProposePolicyInput, reason: string): Promise<Decision & { actionId: string }> {
+    return this.createAction({
+      id: typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      timestamp: new Date().toISOString(),
+      type: "propose_policy",
+      actor: { kind: "agent", name: "sdk-agent" },
+      params: { policy, reason },
+    });
+  }
+
+  /** Poll for approval. Resolves when action is approved/rejected or timeout. */
+  async waitForApproval(actionId: string, opts?: { timeoutMs?: number; intervalMs?: number }): Promise<{ status: string; approved: boolean }> {
+    const timeout = opts?.timeoutMs ?? 300_000;
+    const interval = opts?.intervalMs ?? 5_000;
+    const start = Date.now();
+
+    while (Date.now() - start < timeout) {
+      const action = await this.getAction(actionId);
+      const status = (action as any).status;
+      if (status === "approved" || status === "completed") {
+        return { status, approved: true };
+      }
+      if (status === "rejected") {
+        return { status, approved: false };
+      }
+      await sleep(interval);
+    }
+    throw new Error(`Approval timeout after ${timeout}ms for action ${actionId}`);
+  }
 }
 
 /** ---- Singleton + Convenience API (backwards & ergonomic) -------------- */
@@ -136,6 +259,7 @@ export async function propose(input: {
   params?: Record<string, unknown>;
   id?: string;
   timestamp?: string;
+  agentId?: string;  // Link to registered agent
 }): Promise<Decision & { actionId: string }> {
   const id = input.id ?? (typeof crypto !== "undefined" && "randomUUID" in crypto
     ? crypto.randomUUID()
@@ -149,6 +273,7 @@ export async function propose(input: {
     actor: input.actor,
     target: input.target,
     params: input.params,
+    agentId: input.agentId,
   };
   return client.createAction(action);
 }
@@ -171,6 +296,7 @@ export async function policy(action?: string): Promise<Policy> {
 export async function approve(actionId: string, approver?: string) {
   return client.approveAction(actionId, approver);
 }
+
 export async function reject(actionId: string, reason?: string) {
   return client.rejectAction(actionId, reason);
 }
@@ -187,45 +313,11 @@ export async function setPolicy(p: Policy) {
   return client.setPolicy(p);
 }
 
-/** ---- Optional ergonomic helper: orchestrate propose → execute → evidence */
-export async function withAction<T>(opts: {
-  apaai?: AccountabilityLayer;                 // use custom client or global singleton
-  type: string;
-  actor: any;
-  target?: string;
-  params?: Record<string, unknown>;
-  onApproval?: (d: { actionId: string }) => Promise<void> | void;
-  execute: () => Promise<T>;
-  evidence: {
-    onSuccess?: (result: T) => Evidence["checks"];
-    onError?: (err: unknown) => Evidence["checks"];
-  };
-}) {
-  const c = opts.apaai ?? client;
-
-  const decision = await c.createAction({
-    id: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-    timestamp: new Date().toISOString(),
-    type: opts.type,
-    actor: opts.actor,
-    target: opts.target,
-    params: opts.params,
-  });
-
-  if (decision.status === "requires_approval" && opts.onApproval) {
-    await opts.onApproval({ actionId: (decision as any).actionId });
-  }
-
-  try {
-    const result = await opts.execute();
-    const checks = opts.evidence.onSuccess?.(result) ?? [{ name: "ok", pass: true }];
-    await c.submitEvidence({ actionId: (decision as any).actionId, checks });
-    return result;
-  } catch (err) {
-    const checks = opts.evidence.onError?.(err) ?? [{ name: "error", pass: false, note: String(err) }];
-    await c.submitEvidence({ actionId: (decision as any).actionId, checks });
-    throw err;
-  }
+/** Bootstrap an agent — creates a new client configured with the agent token */
+export async function bootstrap(input: BootstrapInput & { endpoint?: string }): Promise<{ client: AccountabilityLayer; result: BootstrapResult }> {
+  const c = new AccountabilityLayer({ endpoint: input.endpoint });
+  const result = await c.bootstrap(input);
+  return { client: c, result };
 }
 
 export default AccountabilityLayer;
